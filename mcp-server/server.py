@@ -16,6 +16,8 @@ Usage:
   python server.py --transport streamable-http --host 0.0.0.0 --port 9000
 """
 
+from __future__ import annotations
+
 import argparse
 import os
 
