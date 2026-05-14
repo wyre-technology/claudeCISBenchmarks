@@ -3,7 +3,8 @@
     "cis-benchmarks": {
       "command": "/Users/asachs/work/wyre/engineering/projects/ai/skills/cisSkills/.venv/bin/python",
       "args": [
-        "/Users/asachs/work/wyre/engineering/projects/ai/skills/cisSkills/mcp-server/server.py"
+        "/Users/asachs/work/wyre/engineering/projects/ai/skills/cisSkills/mcp-server/server.py",
+        "--transport", "stdio"
       ],
       "env": {
         "DB_DIR": "/Users/asachs/work/wyre/engineering/projects/ai/skills/cisSkills/mcp-server/data"

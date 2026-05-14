@@ -5,8 +5,18 @@ Tools:
   list_benchmarks       — list all indexed benchmarks
   search_controls       — semantic search across all (or one) benchmark
   get_benchmark_summary — section-level overview of a specific benchmark
+
+Transport modes:
+  stdio (default)       — subprocess mode, used by Claude Code via .mcp.json
+  streamable-http       — HTTP mode for remote/multi-client deployments
+
+Usage:
+  python server.py                                    # stdio
+  python server.py --transport streamable-http        # HTTP on 127.0.0.1:8000
+  python server.py --transport streamable-http --host 0.0.0.0 --port 9000
 """
 
+import argparse
 import os
 
 import chromadb
@@ -17,7 +27,7 @@ DB_DIR = os.environ.get(
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "data"),
 )
 
-mcp = FastMCP("cis-benchmarks")
+mcp = FastMCP("cis-benchmarks", stateless_http=True)
 
 _client: chromadb.PersistentClient | None = None
 _collection = None
@@ -146,4 +156,18 @@ def get_benchmark_summary(benchmark_name: str) -> str:
 
 
 if __name__ == "__main__":
-    mcp.run()
+    parser = argparse.ArgumentParser(description="CIS Benchmarks MCP Server")
+    parser.add_argument(
+        "--transport",
+        choices=["stdio", "streamable-http"],
+        default="stdio",
+        help="Transport mode (default: stdio)",
+    )
+    parser.add_argument("--host", default="127.0.0.1", help="HTTP host (default: 127.0.0.1)")
+    parser.add_argument("--port", type=int, default=8000, help="HTTP port (default: 8000)")
+    args = parser.parse_args()
+
+    if args.transport == "streamable-http":
+        mcp.run(transport="streamable-http", host=args.host, port=args.port)
+    else:
+        mcp.run(transport="stdio")
