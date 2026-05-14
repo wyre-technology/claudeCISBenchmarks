@@ -1,0 +1,11 @@
+{
+  "name": "cis-benchmarks",
+  "version": "1.0.0",
+  "description": "CIS Benchmark RAG search — query, audit, and remediate controls across 27 CIS benchmarks via semantic search",
+  "author": {
+    "name": "Wyre",
+    "email": "aaron@sachshaus.net"
+  },
+  "license": "MIT",
+  "keywords": ["cis", "security", "compliance", "benchmarks", "hardening", "audit", "msp"]
+}

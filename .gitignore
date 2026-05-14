@@ -1,0 +1,14 @@
+# Vector database — re-generate with: bash scripts/setup.sh
+mcp-server/data/
+
+# Python virtualenv
+.venv/
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# PDFs are intentionally excluded from the public repo
+*.pdf
+*.PDF
