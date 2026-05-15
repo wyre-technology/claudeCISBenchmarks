@@ -31,6 +31,13 @@ DB_DIR = os.environ.get(
 
 mcp = FastMCP("cis-benchmarks", stateless_http=True)
 
+
+@mcp.custom_route("/health", methods=["GET"])
+async def health(request):  # noqa: ANN001 — starlette Request
+    from starlette.responses import JSONResponse
+    col = collection()
+    return JSONResponse({"status": "ok", "service": "cis-benchmarks-mcp", "chunks": col.count()})
+
 _client: chromadb.PersistentClient | None = None
 _collection = None
 

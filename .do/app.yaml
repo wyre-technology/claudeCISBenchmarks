@@ -1,0 +1,42 @@
+name: cis-benchmarks-mcp
+region: nyc
+
+services:
+  - name: mcp-server
+    dockerfile_path: Dockerfile
+    github:
+      repo: wyre-technology/claudeCISBenchmarks
+      branch: main
+      deploy_on_push: true
+    http_port: 8080
+    instance_size_slug: basic-s   # 1 vCPU, 2 GB RAM — sized for ChromaDB + Python
+    instance_count: 1
+    health_check:
+      http_path: /health
+      initial_delay_seconds: 90   # allow time to download ChromaDB from Spaces
+      period_seconds: 30
+      timeout_seconds: 10
+      failure_threshold: 3
+    envs:
+      - key: PORT
+        value: "8080"
+      - key: DB_DIR
+        value: /app/mcp-server/data
+      - key: SPACES_REGION
+        value: nyc3
+        scope: RUN_AND_BUILD_TIME
+      - key: SPACES_BUCKET
+        scope: RUN_AND_BUILD_TIME
+        # Set value via DO dashboard or: doctl apps update <app-id> --set-env SPACES_BUCKET=<value>
+      - key: SPACES_PREFIX
+        value: cis-benchmarks-db/
+        scope: RUN_AND_BUILD_TIME
+      - key: SPACES_ACCESS_KEY_ID
+        type: SECRET
+        scope: RUN_AND_BUILD_TIME
+      - key: SPACES_SECRET_ACCESS_KEY
+        type: SECRET
+        scope: RUN_AND_BUILD_TIME
+      - key: MCP_API_KEY
+        type: SECRET
+        # Checked by the Cloudflare Worker — not used by the server itself

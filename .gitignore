@@ -9,6 +9,10 @@ __pycache__/
 # macOS
 .DS_Store
 
+# Wrangler local dev
+worker/.wrangler/
+.wranglerignore
+
 # PDFs are intentionally excluded from the public repo
 *.pdf
 *.PDF
